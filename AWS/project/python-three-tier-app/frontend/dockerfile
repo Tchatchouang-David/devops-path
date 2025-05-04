@@ -8,27 +8,26 @@ RUN apt-get update \
 
 WORKDIR /app
 
-# install into an isolated directory
+# build your dependencies into wheels
 COPY requirements.txt .
 RUN pip wheel --no-cache-dir --wheel-dir=/wheels -r requirements.txt
 
 # ─── runtime stage ─────────────────────────────────────────────
 FROM python:3.12-slim
 
-# runtime only; no compilers
+# install only the runtime shared‑library, then clean apt lists
 RUN apt-get update \
- && apt-get install -y --no-install-recommends libffi7 \
+ && apt-get install -y --no-install-recommends libffi8 \
  && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-# copy just the wheels & install
+# copy in the pre‑built wheels and install them
 COPY --from=builder /wheels /wheels
 RUN pip install --no-index --no-cache-dir /wheels/*
 
-# copy application code
+# copy your application code
 COPY . .
 
 EXPOSE 5000
-
 CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "app:app"]
