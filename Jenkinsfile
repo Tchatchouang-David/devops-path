@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     parameters {
-        string(name: 'FRONTEND_BUILD_IMAGE', defaultValue: 'flaskFrontendImage', description: 'my flask frontend image name')
+        string(name: 'FRONTEND_BUILD_IMAGE', defaultValue: 'flask_frontend_image', description: 'my flask frontend image name')
         string(name: 'FRONTEND_IMAGE_TAG',   defaultValue: 'latest',                 description: 'my frontend image tag')
         string(name: 'test', defaultValue: 'testing', description: 'this is just for testing')
     }
