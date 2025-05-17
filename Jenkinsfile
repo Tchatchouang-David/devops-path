@@ -60,10 +60,10 @@ pipeline {
         }
     }
     
-    post {
-        failure {
-            echo "Pipeline failed. Cleaning up resources..."
-            sh "docker rm -f flask_frontend_container || true"
-        }
-    }
+    // post {
+    //     failure {
+    //         echo "Pipeline failed. Cleaning up resources..."
+    //         sh "docker rm -f flask_frontend_container || true"
+    //     }
+    // }
 }
