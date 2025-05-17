@@ -41,7 +41,7 @@ pipeline {
                         
                         // Test with curl and check status code
                         def statusCode = sh(
-                            script: "curl -s -o /dev/null -w '%{http_code}' http://${containerIP}:5000",
+                            script: "curl -s -o /dev/null -w '%{http_code}' http://${containerIP}:4000",
                             returnStdout: true
                         ).trim()
                         

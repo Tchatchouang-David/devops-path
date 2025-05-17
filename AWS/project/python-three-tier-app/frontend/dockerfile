@@ -23,5 +23,5 @@ RUN pip install --no-index --no-cache-dir /wheels/*
 
 COPY . .
 
-EXPOSE 5000
-CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "app:app"]
+EXPOSE 4000
+CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:4000", "app:app"]
