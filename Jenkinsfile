@@ -28,29 +28,29 @@ pipeline {
                 script {
                     try {
                         // Start container
-                        sh "docker run -d --name flask_frontend_container ${params.FRONTEND_BUILD_IMAGE}:${params.FRONTEND_IMAGE_TAG}"
+                        sh "docker run -d -p 4000:4000 --name flask_frontend_container ${params.FRONTEND_BUILD_IMAGE}:${params.FRONTEND_IMAGE_TAG}"
                         
-                        // // Give container time to start
-                        // sh "sleep 60"
+                        // Give container time to start
+                        sh "sleep 60"
                         
-                        // // Get container IP
-                        // def containerIP = sh(
-                        //     script: "docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' flask_frontend_container",
-                        //     returnStdout: true
-                        // ).trim()
+                        // Get container IP
+                        def containerIP = sh(
+                            script: "docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' flask_frontend_container",
+                            returnStdout: true
+                        ).trim()
                         
-                        // // Test with curl and check status code
-                        // def statusCode = sh(
-                        //     script: "curl -I http://${containerIP}:4000",
-                        //     returnStdout: true
-                        // ).trim()
+                        // Test with curl and check status code
+                        def statusCode = sh(
+                            script: "curl -I http://${containerIP}:4000",
+                            returnStdout: true
+                        ).trim()
                         
-                        // // Validate status code (200 is OK)
-                        // if (statusCode != "200") {
-                        //     error "HTTP request failed with status code: ${statusCode}"
-                        // } else {
-                        //     echo "HTTP request successful with status code: ${statusCode}"
-                        // }
+                        // Validate status code (200 is OK)
+                        if (statusCode != "200") {
+                            error "HTTP request failed with status code: ${statusCode}"
+                        } else {
+                            echo "HTTP request successful with status code: ${statusCode}"
+                        }
                     } finally {
                         // Always clean up the container
                         sh "docker rm -f flask_frontend_container || true"

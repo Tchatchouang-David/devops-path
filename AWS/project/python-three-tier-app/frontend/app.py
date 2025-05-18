@@ -10,7 +10,7 @@ def index():
 
     try:
         # URL du backend
-        url = "http://localhost:4000/"
+        url = "http://localhost:5000/"
         response = requests.get(url, timeout=60)
         todos = json.loads(response.content)
     except Exception as ex:
@@ -22,7 +22,7 @@ def index():
 def create():
     task = request.form.get('task')
     try:
-        url = "http://localhost:4000/create"
+        url = "http://localhost:5000/create"
         data = {'task': task}
         response = requests.post(url, data=data)
         return redirect('/')
@@ -35,7 +35,7 @@ def update():
     task_id = request.form.get('task_id')
     task = request.form.get('task')
     try:
-        url = "http://localhost:4000/update"
+        url = "http://localhost:5000/update"
         data = {'task_id': task_id, 'task': task}
         response = requests.post(url, data=data)
         return redirect('/')
