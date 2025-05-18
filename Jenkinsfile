@@ -40,8 +40,8 @@ pipeline {
                         ).trim()
                         
                         // Test with curl and check status code
-                        def statusCode = sh(
-                            script: "curl -I http://${containerIP}:4000",
+                       def statusCode = sh(
+                            script: "curl -s -o /dev/null -w '%{http_code}' http://${containerIP}:4000",
                             returnStdout: true
                         ).trim()
                         
