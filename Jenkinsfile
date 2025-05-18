@@ -31,7 +31,7 @@ pipeline {
                         sh "docker run -d --name flask_frontend_container ${params.FRONTEND_BUILD_IMAGE}:${params.FRONTEND_IMAGE_TAG}"
                         
                         // Give container time to start
-                        sh "sleep 5"
+                        sh "sleep 60"
                         
                         // Get container IP
                         def containerIP = sh(
@@ -41,7 +41,7 @@ pipeline {
                         
                         // Test with curl and check status code
                         def statusCode = sh(
-                            script: "curl -s -o /dev/null -w '%{http_code}' http://${containerIP}:4000",
+                            script: "curl -I http://${containerIP}:4000",
                             returnStdout: true
                         ).trim()
                         
