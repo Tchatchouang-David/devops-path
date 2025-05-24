@@ -4,6 +4,7 @@ pipeline {
     parameters {
         string(name: 'FRONTEND_BUILD_IMAGE', defaultValue: 'flask_frontend_image', description: 'my flask frontend image name')
         string(name: 'FRONTEND_IMAGE_TAG',   defaultValue: 'latest',                 description: 'my frontend image tag')
+        string(name: 'DOCKERHUB_REPO_NAME', defaultValue: 'devopspath', description: 'docker hub repository name')
     }
     
     stages {
@@ -66,9 +67,11 @@ pipeline {
                 usernameVariable: 'DOCKERHUB_USER', 
                 passwordVariable: 'DOCKERHUB_PASS'
                 )]) {
-                sh "echo Logging in to Docker Hub as ${DOCKERHUB_USER}"
+                sh "echo \"Tagging my image inother to push on docker hub\""
+                sh "docker tag ${params.FRONTEND_BUILD_IMAGE}:${params.FRONTEND_IMAGE_TAG} ${DOCKERHUB_USER}/${params.DOCKERHUB_REPO_NAME}:latest"
+                sh "echo \"Logging in to Docker Hub as ${DOCKERHUB_USER}\""
                 sh "docker login -u ${DOCKERHUB_USER} -p ${DOCKERHUB_PASS}"
-                sh "docker push ${params.FRONTEND_BUILD_IMAGE}:${params.FRONTEND_IMAGE_TAG}"
+                sh "docker push ${DOCKERHUB_USER}/${params.DOCKERHUB_REPO_NAME}:latest"
             }
         }
     }
