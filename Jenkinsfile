@@ -71,6 +71,7 @@ pipeline {
                 sh "docker tag ${params.FRONTEND_BUILD_IMAGE}:${params.FRONTEND_IMAGE_TAG} ${DOCKERHUB_USER}/${params.DOCKERHUB_REPO_NAME}:latest"
                 sh "echo \"Logging in to Docker Hub as ${DOCKERHUB_USER}\""
                 sh "docker login -u ${DOCKERHUB_USER} -p ${DOCKERHUB_PASS}"
+                sh "sleep 10"
                 sh "docker push ${DOCKERHUB_USER}/${params.DOCKERHUB_REPO_NAME}:latest"
             }
         }
