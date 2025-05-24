@@ -31,7 +31,7 @@ pipeline {
                         sh "docker run -d -p 4000:4000 --name flask_frontend_container ${params.FRONTEND_BUILD_IMAGE}:${params.FRONTEND_IMAGE_TAG}"
                         
                         // Give container time to start
-                        sh "sleep 60"
+                        sh "sleep 5"
                         
                         // Get container IP
                         def containerIP = sh(
@@ -58,6 +58,20 @@ pipeline {
                 }
             }
         }
+         stage("Push to Docker Hub") {
+        steps {
+            // Use Jenkins credentials (create a 'dockerhub-credentials' with your Docker Hub username/password)
+            withCredentials([usernamePassword(
+                credentialsId: '550b2578-f31d-4312-adbd-f0714cb4d0fe',
+                usernameVariable: 'DOCKERHUB_USER', 
+                passwordVariable: 'DOCKERHUB_PASS'
+                )]) {
+                sh "echo \"Logging in to Docker Hub as ${DOCKERHUB_USER}\""
+                sh "docker login -u ${DOCKERHUB_USER} -p ${DOCKERHUB_PASS}"
+                sh "docker push ${params.FRONTEND_BUILD_IMAGE}:${params.FRONTEND_IMAGE_TAG}"
+            }
+        }
+    }
     }
     
     post {
